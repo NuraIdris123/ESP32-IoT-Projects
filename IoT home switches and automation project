@@ -1,0 +1,56 @@
+#define BLYNK_TEMPLATE_ID "TMPL23GDC--6p"
+#define BLYNK_TEMPLATE_NAME "ESp 32 Switch"
+#define BLYNK_AUTH_TOKEN "XYkVFwSBc-G0JLUeg3arhIlYIdZB6yZg"
+
+#include <WiFi.h>
+#include <BlynkSimpleEsp32.h>
+
+char ssid[] = "Nura iPhone";
+char pass[] = "18941136";
+
+// Pins we want to control
+#define PIN_1 2
+#define PIN_2 3
+#define PIN_3 8
+
+// ===== BUTTON 1 (V0) → GPIO2 =====
+BLYNK_WRITE(V0)
+{
+  int value = param.asInt();      // reads 0 or 1 from app
+  digitalWrite(PIN_1, value);     // send HIGH/LOW to pin 2
+}
+
+// ===== BUTTON 2 (V1) → GPIO3 =====
+BLYNK_WRITE(V1)
+{
+  int value = param.asInt();
+  digitalWrite(PIN_2, value);
+}
+
+// ===== BUTTON 3 (V2) → GPIO8 =====
+BLYNK_WRITE(V2)
+{
+  int value = param.asInt();
+  digitalWrite(PIN_3, value);
+}
+
+void setup()
+{
+  Serial.begin(115200);
+
+  pinMode(PIN_1, OUTPUT);
+  pinMode(PIN_2, OUTPUT);
+  pinMode(PIN_3, OUTPUT);
+
+  digitalWrite(PIN_1, LOW);
+  digitalWrite(PIN_2, LOW);
+  digitalWrite(PIN_3, LOW);
+
+  // connect to WiFi and Blynk cloud
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+}
+
+void loop()
+{
+  Blynk.run();
+}
